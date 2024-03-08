@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:chat_app/StompClient/stomp_client.dart';
-import 'package:chat_app/bloc/userList/user_list_bloc.dart';
-import 'package:chat_app/bloc/userList/user_list_bloc.dart';
-import 'package:chat_app/common_widgets/custom_values.dart';
 import 'package:chat_app/models/Result.dart';
 import 'package:chat_app/models/user.dart';
+import 'package:chat_app/presentation/bloc/userList/user_list_bloc.dart';
+import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:chat_app/router/nav_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-import '../services/http_service.dart';
+
+import '../../services/StompClient/stomp_client.dart';
 
 class ConnectedUsers extends StatelessWidget {
   final String nickName;

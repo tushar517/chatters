@@ -1,7 +1,7 @@
+import 'package:chat_app/models/Result.dart';
+import 'package:chat_app/models/user.dart';
+import 'package:chat_app/services/http_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../models/Result.dart';
-import '../../models/user.dart';
-import '../../services/http_service.dart';
 
 part 'user_list_event.dart';
 

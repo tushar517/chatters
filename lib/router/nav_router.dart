@@ -1,8 +1,8 @@
 import 'package:chat_app/models/user.dart';
-import 'package:chat_app/screens/chat_screen.dart';
-import 'package:chat_app/screens/connected_user_screen.dart';
-import 'package:chat_app/screens/login_screen.dart';
-import 'package:chat_app/screens/signup_screen.dart';
+import 'package:chat_app/presentation/screens/chat_screen.dart';
+import 'package:chat_app/presentation/screens/connected_user_screen.dart';
+import 'package:chat_app/presentation/screens/login_screen.dart';
+import 'package:chat_app/presentation/screens/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:chat_app/bloc/chat/chat_bloc.dart';
-import 'package:chat_app/common_widgets/custom_values.dart';
 import 'package:chat_app/models/Result.dart';
+import 'package:chat_app/models/chat_message.dart';
 import 'package:chat_app/models/user.dart';
+import 'package:chat_app/presentation/bloc/chat/chat_bloc.dart';
+import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-import '../StompClient/stomp_client.dart';
-import '../models/chat_message.dart';
+
+import '../../services/StompClient/stomp_client.dart';
 
 class ChatScreen extends StatelessWidget {
   final String senderNickname;
@@ -198,17 +199,17 @@ class ChatScreen extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                       gradient: greyGradient,
                                                       borderRadius:
-                                                          BorderRadius.all(
+                                                          const BorderRadius.all(
                                                               Radius.circular(
                                                                   15))),
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                       vertical: 12,
                                                       horizontal: 20),
-                                                  margin: EdgeInsets.only(
+                                                  margin: const EdgeInsets.only(
                                                       right: 20),
                                                   child: Text(
                                                     list[index].content,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.white),
                                                   ),
                                                 ),

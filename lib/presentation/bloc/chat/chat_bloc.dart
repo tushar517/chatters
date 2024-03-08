@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chat_app/services/http_service.dart';
 import 'package:meta/meta.dart';
-
-import '../../models/Result.dart';
-import '../../models/chat_message.dart';
-import '../../services/http_service.dart';
 import 'package:collection/collection.dart';
+
+import '../../../models/Result.dart';
+import '../../../models/chat_message.dart';
 part 'chat_event.dart';
 
 part 'chat_state.dart';

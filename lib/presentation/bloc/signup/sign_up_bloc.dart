@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/models/ApiResponse.dart';
 import 'package:chat_app/models/Result.dart';
+import 'package:chat_app/models/user.dart';
 import 'package:chat_app/services/http_service.dart';
 import 'package:meta/meta.dart';
 import 'package:string_validator/string_validator.dart';
-
-import '../../models/user.dart';
 
 part 'sign_up_event.dart';
 

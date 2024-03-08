@@ -1,11 +1,10 @@
+import 'package:chat_app/models/ApiResponse.dart';
+import 'package:chat_app/models/Result.dart';
 import 'package:chat_app/models/user.dart';
+import 'package:chat_app/services/http_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:string_validator/string_validator.dart';
-
-import '../../models/ApiResponse.dart';
-import '../../models/Result.dart';
-import '../../services/http_service.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
