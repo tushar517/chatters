@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:chat_app/data/models/ApiResponse.dart';
+import 'package:chat_app/data/models/chat_message.dart';
+import 'package:chat_app/data/models/user.dart';
 
-import 'package:chat_app/models/ApiResponse.dart';
-import 'package:chat_app/models/chat_message.dart';
-import 'package:chat_app/models/user.dart';
 import 'package:dio/dio.dart';
 
 String baseUrl ="https://chat-services.onrender.com/";
@@ -15,6 +15,9 @@ final dio = Dio(
     headers: {
       HttpHeaders.contentTypeHeader: "application/json",
     },
+    connectTimeout: const Duration(seconds: 120),
+    sendTimeout:const  Duration(seconds: 120),
+    receiveTimeout:const Duration(seconds: 120),
   )
 );
 void main(){

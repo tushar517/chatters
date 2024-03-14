@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:chat_app/models/Result.dart';
-import 'package:chat_app/models/chat_message.dart';
-import 'package:chat_app/models/user.dart';
+import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/models/chat_message.dart';
+import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/bloc/chat/chat_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 
-import '../../services/StompClient/stomp_client.dart';
+import '../../commonutils/StompClient/stomp_client.dart';
 
 class ChatScreen extends StatelessWidget {
   final String senderNickname;
@@ -35,7 +35,17 @@ class ChatScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<ChatBloc, ChatState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            Result result = state.chatApi as Result;
+            if (result is Success<String>) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(result.data)));
+            }
+            if (result is Error) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(result.errorMessage)));
+            }
+          },
           builder: (parentContext, state) {
             return Column(
               children: [
@@ -229,11 +239,11 @@ class ChatScreen extends StatelessWidget {
                           );
                         }),
                   ),
-                if (state.chatApi is Success)
+                if (state.chatApi is Success<String>)
                   SizedBox(
                     height: 20,
                   ),
-                if (state.chatApi is Success)
+                if (state.chatApi is Success<String>)
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                     color: Color(0xff1F1F1F),

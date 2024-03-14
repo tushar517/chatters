@@ -1,4 +1,4 @@
-import 'package:chat_app/models/user.dart';
+import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/screens/chat_screen.dart';
 import 'package:chat_app/presentation/screens/connected_user_screen.dart';
 import 'package:chat_app/presentation/screens/login_screen.dart';

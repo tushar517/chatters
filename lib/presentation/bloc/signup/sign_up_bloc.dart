@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/models/ApiResponse.dart';
-import 'package:chat_app/models/Result.dart';
-import 'package:chat_app/models/user.dart';
-import 'package:chat_app/services/http_service.dart';
+import 'package:chat_app/domain/usecases/sign_up.dart';
+import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/models/user.dart';
 import 'package:meta/meta.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -13,7 +12,11 @@ part 'sign_up_event.dart';
 part 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc() : super(SignUpState()) {
+  final SignUp _signUpUseCase;
+
+  SignUpBloc({required SignUp signUpUseCase})
+      : _signUpUseCase = signUpUseCase,
+        super(SignUpState()) {
     on<FirstNameChange>((event, emit) {
       emit(
         state.copyWith(firstName: event.firstName),
@@ -208,10 +211,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpRequest>((event, emit) async {
       emit(state.copyWith(signUpApi: const Loading()));
       try {
-        ApiResponse response = await ApiService().signUpUser(event.user);
+        Result response = await _signUpUseCase(event.user);
         emit(
           state.copyWith(
-            signUpApi: Success<ApiResponse>(response),
+            signUpApi: response,
           ),
         );
       } catch (exception) {
@@ -229,11 +232,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     });
 
     on<GenderChange>((event, emit) {
-      emit(
-        state.copyWith(
-          gender: event.gender
-        )
-      );
+      emit(state.copyWith(gender: event.gender));
     });
   }
 

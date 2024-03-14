@@ -1,7 +1,8 @@
-import 'package:chat_app/models/ApiResponse.dart';
-import 'package:chat_app/models/Result.dart';
-import 'package:chat_app/models/user.dart';
-import 'package:chat_app/services/http_service.dart';
+import 'package:chat_app/data/models/ApiResponse.dart';
+import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/http_service.dart';
+import 'package:chat_app/domain/usecases/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:string_validator/string_validator.dart';
@@ -10,8 +11,8 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-
-  LoginBloc() : super(LoginState()) {
+  final LoginUseCase _loginUseCase;
+  LoginBloc({required LoginUseCase loginUseCase}) : _loginUseCase = loginUseCase, super(LoginState()) {
 
     on<UserPasswordChangeEvent>((event, emit) {
       emit(state.copyWith(password: event.password));
@@ -76,10 +77,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginUserRequest>((event, emit) async {
       emit(state.copyWith(loginApi: const Loading()));
       try {
-        ApiResponse response = await ApiService().loginUser(event.user);
+        Result response = await _loginUseCase(event.user);
         emit(
           state.copyWith(
-            loginApi: Success<ApiResponse>(response),
+            loginApi: response,
           ),
         );
       } catch (exception) {

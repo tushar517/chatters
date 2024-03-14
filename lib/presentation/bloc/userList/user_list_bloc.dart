@@ -1,6 +1,6 @@
-import 'package:chat_app/models/Result.dart';
-import 'package:chat_app/models/user.dart';
-import 'package:chat_app/services/http_service.dart';
+import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/domain/usecases/user_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_list_event.dart';
@@ -8,22 +8,30 @@ part 'user_list_event.dart';
 part 'user_list_state.dart';
 
 class UserListBloc extends Bloc<UserListEvent, UserListState> {
-  UserListBloc() : super(UserListState()) {
+  final UserListUseCase _userListUseCase;
+
+  UserListBloc({required UserListUseCase userListUseCase})
+      : _userListUseCase = userListUseCase,
+        super(UserListState()) {
     on<InitUserScreen>((event, emit) async {
       emit(state.copyWith(userApi: const Loading()));
       try {
-        var users = await ApiService().getConnectedUsers();
-        print("difference between ${DateTime.now().difference(users[0].lastSeen??DateTime.now()).inHours}");
-        emit(
-          state.copyWith(
-              userApi: Success<List<User>>(users),
-              connectedUserList: users
-                  .where((element) =>
-                      (element.status && element.userName != event.userName))
-                  .toList(),
-              disconnectedUserList:
-                  users.where((element) => !element.status).toList()),
-        );
+        var users = await _userListUseCase("");
+        List<User> connectedList = [];
+        List<User> disConnectedList = [];
+        if (users is Success<List<User>>) {
+          connectedList = users.data
+              .where((element) =>
+                  (element.status && element.userName != event.userName))
+              .toList();
+          disConnectedList =
+              users.data.where((element) => !element.status).toList();
+        }
+        emit(state.copyWith(
+          userApi: users,
+          connectedUserList: connectedList,
+          disconnectedUserList: disConnectedList,
+        ));
       } catch (ex) {
         emit(state.copyWith(userApi: Error(ex.toString())));
       }

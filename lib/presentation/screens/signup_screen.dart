@@ -1,9 +1,9 @@
-import 'package:chat_app/models/ApiResponse.dart';
-import 'package:chat_app/models/Result.dart';
-import 'package:chat_app/models/user.dart';
+import 'package:chat_app/data/models/ApiResponse.dart';
+import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/bloc/signup/sign_up_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
-import 'package:chat_app/router/nav_router.dart';
+import 'package:chat_app/commonutils/router/nav_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../common_widgets/custom_button.dart';
