@@ -31,7 +31,6 @@ class ChatMessage {
   String messageTime;
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
-    print("timestamp ${json["timeStamp"]}");
     DateTime timeStamp;
     String messageTime;
     String messageDay;

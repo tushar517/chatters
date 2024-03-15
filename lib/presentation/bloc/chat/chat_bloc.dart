@@ -27,9 +27,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         Map<String,List<ChatMessage>> chatMap = groupBy(chats, (ChatMessage p0) => p0.messageDay);
         emit(
           state.copyWith(
-            chatList: List.from(state.chatList)..addAll(chats),
-            chatMap: chatMap,
-            chatApi: const Success("Chat Fetched Successfully")
+              chatList: List.from(state.chatList)..addAll(chats),
+              chatMap: chatMap,
+              chatApi: const Success("Chat Fetched Successfully")
           ),
         );
       } catch (ex) {
@@ -40,8 +40,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         );
         print("screen ${ex.toString()}");
       }
-      emit(state.copyWith(chatApi: const Empty()));
-
     });
 
     on<ChatReceiveEvent>((event, emit) {

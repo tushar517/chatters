@@ -21,9 +21,9 @@ class ChatScreen extends StatelessWidget {
 
   ChatScreen(
       {super.key,
-      required this.senderNickname,
-      required this.receiverUser,
-      required this.profileImg});
+        required this.senderNickname,
+        required this.receiverUser,
+        required this.profileImg});
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +35,7 @@ class ChatScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<ChatBloc, ChatState>(
-          listener: (context, state) {
-            Result result = state.chatApi as Result;
-            if (result is Success<String>) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(result.data)));
-            }
-            if (result is Error) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(result.errorMessage)));
-            }
-          },
+          listener: (context, state) {},
           builder: (parentContext, state) {
             return Column(
               children: [
@@ -57,7 +47,7 @@ class ChatScreen extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(37)),
+                            const BorderRadius.all(Radius.circular(37)),
                             image: DecorationImage(
                                 image: AssetImage(profileImg),
                                 fit: BoxFit.fill)),
@@ -150,7 +140,7 @@ class ChatScreen extends StatelessWidget {
                                         senderNickname) {
                                       return Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: [
                                           const SizedBox(
                                             height: 10,
@@ -159,8 +149,8 @@ class ChatScreen extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 gradient: purpleGradient,
                                                 borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(15))),
+                                                const BorderRadius.all(
+                                                    Radius.circular(15))),
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 12, horizontal: 20),
                                             margin: EdgeInsets.only(left: 20),
@@ -178,22 +168,22 @@ class ChatScreen extends StatelessWidget {
                                     } else {
                                       return Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(
                                             height: 10,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                37)),
+                                                    const BorderRadius.all(
+                                                        Radius.circular(
+                                                            37)),
                                                     image: DecorationImage(
                                                         image: AssetImage(
                                                             profileImg),
@@ -209,17 +199,17 @@ class ChatScreen extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                       gradient: greyGradient,
                                                       borderRadius:
-                                                          const BorderRadius.all(
-                                                              Radius.circular(
-                                                                  15))),
-                                                  padding: const EdgeInsets.symmetric(
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              15))),
+                                                  padding: EdgeInsets.symmetric(
                                                       vertical: 12,
                                                       horizontal: 20),
-                                                  margin: const EdgeInsets.only(
+                                                  margin: EdgeInsets.only(
                                                       right: 20),
                                                   child: Text(
                                                     list[index].content,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: Colors.white),
                                                   ),
                                                 ),
@@ -239,11 +229,11 @@ class ChatScreen extends StatelessWidget {
                           );
                         }),
                   ),
-                if (state.chatApi is Success<String>)
+                if (state.chatApi is Success)
                   SizedBox(
                     height: 20,
                   ),
-                if (state.chatApi is Success<String>)
+                if (state.chatApi is Success)
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                     color: Color(0xff1F1F1F),
@@ -256,7 +246,7 @@ class ChatScreen extends StatelessWidget {
                                 border: Border.all(
                                     color: Color(0xff272626), width: 0.3),
                                 borderRadius:
-                                    const BorderRadius.all(Radius.circular(8)),
+                                const BorderRadius.all(Radius.circular(8)),
                                 color: Color(0xff272626)),
                             child: TextField(
                               onChanged: (value) {
@@ -315,7 +305,7 @@ class ChatScreen extends StatelessWidget {
           try {
             ChatMessage chat = ChatMessage.fromJson(json.decode(frame.body!));
             if ((chat.senderId == senderNickname &&
-                    chat.recipientId == receiverUser.userName) ||
+                chat.recipientId == receiverUser.userName) ||
                 (chat.senderId == receiverUser.userName &&
                     chat.recipientId == senderNickname)) {
               bloc.add(ChatReceiveEvent(chat: chat));
