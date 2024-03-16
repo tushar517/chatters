@@ -5,8 +5,7 @@ class CustomButton extends StatelessWidget {
   final Function() onPress;
   final String btntext;
   final bool isEnable;
-  final bool isLoading;
-  const CustomButton({super.key, required this.width, required this.onPress, required this.btntext, required this.isEnable, required this.isLoading});
+  const CustomButton({super.key, required this.width, required this.onPress, required this.btntext, required this.isEnable});
 
   @override
   Widget build(BuildContext context) {
@@ -14,20 +13,18 @@ class CustomButton extends StatelessWidget {
       width: width,
       padding: const EdgeInsets.only(left: 20,right: 20),
       decoration: BoxDecoration(
-          gradient: (isEnable && !isLoading)?purpleGradient:greyGradient,
+          gradient: (isEnable)?purpleGradient:greyGradient,
           borderRadius:const BorderRadius.all(Radius.circular(15)),
       ),
       child: IgnorePointer(
-        ignoring: (!isEnable || isLoading),
+        ignoring: (!isEnable),
         child: MaterialButton(
           onPressed: onPress,
           minWidth: double.infinity,
-          child: (!isLoading)?Text(
+          child:Text(
             btntext,
             style:const TextStyle(color: Colors.white),
-          ):const CircularProgressIndicator(
-            color: Colors.white,
-          ),
+          )
         ),
       ),
     );

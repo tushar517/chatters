@@ -32,6 +32,6 @@ Future<void> initDependencies() async{
   getItInstance.registerLazySingleton(() => UserListBloc(userListUseCase: getItInstance()));
 
   getItInstance.registerFactory(() => ChatListUseCase(getItInstance()));
-  //getItInstance.registerLazySingleton(() => ChatBloc(chatListUseCase: getItInstance()));
+  getItInstance.registerLazySingleton(() => ChatBloc(chatListUseCase: getItInstance()));
 
 }

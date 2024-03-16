@@ -18,10 +18,10 @@ class ListRemoteDataSourceImpl implements ListRemoteDataSourceRepository {
     );
     if (response.statusCode == 200) {
       print(response.data);
-      List<ChatMessage> _model =
+      List<ChatMessage> model =
           (response.data as List).map((e) => ChatMessage.fromJson(e)).toList();
-      if (_model.isNotEmpty) {
-        return _model;
+      if (model.isNotEmpty) {
+        return model;
       } else {
         return <ChatMessage>[];
       }

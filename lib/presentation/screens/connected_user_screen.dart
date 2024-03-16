@@ -250,7 +250,7 @@ class ConnectedUsers extends StatelessWidget {
                                                 "profileImg": img
                                               },
                                               extra: state
-                                                  .connectedUserList[index]);
+                                                  .disconnectedUserList[index]);
                                         },
                                         child: IntrinsicWidth(
                                           child: Container(

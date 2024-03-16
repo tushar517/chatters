@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<LoginBloc>(create: (BuildContext context)=>getItInstance<LoginBloc>()),
         BlocProvider<SignUpBloc>(create: (BuildContext context)=>getItInstance<SignUpBloc>()),
         BlocProvider<UserListBloc>(create: (BuildContext context)=>getItInstance<UserListBloc>()),
-        BlocProvider<ChatBloc>(create: (BuildContext context)=>ChatBloc()),
+        BlocProvider<ChatBloc>(create: (BuildContext context)=>getItInstance<ChatBloc>()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/commonutils/http_service.dart';
+import 'package:chat_app/data/models/ChatListRequest.dart';
+import 'package:chat_app/domain/usecases/chat_list.dart';
 import 'package:meta/meta.dart';
 import 'package:collection/collection.dart';
 
@@ -12,7 +14,8 @@ part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc() : super(ChatState()) {
+  final ChatListUseCase _chatListUseCase;
+  ChatBloc({required ChatListUseCase chatListUseCase}) :_chatListUseCase = chatListUseCase, super(ChatState()) {
     on<AddSenderReceiverName>((event, emit) {
       emit(state.copyWith(
           senderUserName: event.senderName,
@@ -22,16 +25,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatLoadEvent>((event, emit) async {
       emit(state.copyWith(chatApi: const Loading()));
       try {
-        List<ChatMessage> chats = await ApiService()
-            .getChat(state.senderUserName, state.receiverUserName);
-        Map<String,List<ChatMessage>> chatMap = groupBy(chats, (ChatMessage p0) => p0.messageDay);
-        emit(
-          state.copyWith(
-              chatList: List.from(state.chatList)..addAll(chats),
-              chatMap: chatMap,
-              chatApi: const Success("Chat Fetched Successfully")
-          ),
-        );
+        var chats = await _chatListUseCase(ChatListRequest(recipientId: state.receiverUserName, senderId: state.senderUserName));
+        if(chats is Success<List<ChatMessage>>) {
+          Map<String, List<ChatMessage>> chatMap =
+              groupBy(chats.data, (ChatMessage p0) => p0.messageDay);
+          emit(
+            state.copyWith(
+                chatList: List.from(state.chatList)..addAll(chats.data),
+                chatMap: chatMap,
+                chatApi: const Success("Chat Fetched Successfully")),
+          );
+        }else{
+          emit(
+            state.copyWith(
+                chatList: [],
+                chatMap: {},
+                chatApi: const Error("Something went wrong")),
+          );
+        }
       } catch (ex) {
         emit(
           state.copyWith(

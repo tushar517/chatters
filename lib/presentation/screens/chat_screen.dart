@@ -6,6 +6,7 @@ import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/bloc/chat/chat_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 
@@ -35,7 +36,20 @@ class ChatScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<ChatBloc, ChatState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            /*if(state.chatApi is Success && state.chatMap.isNotEmpty){
+              SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+                if(_scrollController.hasClients){
+                  _scrollController.jumpTo(
+                      _scrollController.position.maxScrollExtent);
+                }
+                if(_chatScrollController.hasClients){
+                  _chatScrollController.jumpTo(
+                      _chatScrollController.position.maxScrollExtent);
+                }
+              });
+            }*/
+          },
           builder: (parentContext, state) {
             return Column(
               children: [
@@ -96,199 +110,209 @@ class ChatScreen extends StatelessWidget {
                 ),
                 if (state.chatApi is Loading)
                   Expanded(
-                    child: Container(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          Text("Please Wait...\nLoading Chat",textAlign: TextAlign.center,style: TextStyle(color:Color(0xffC8C8C8)),)
-                        ],
-                      ),
-                      alignment: Alignment.center,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text("Please Wait...\nLoading Chat",textAlign: TextAlign.center,style: TextStyle(color:Color(0xffC8C8C8)),)
+                      ],
                     ),
                   ),
                 if (state.chatApi is Success)
                   Expanded(
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: state.chatMap.length,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          var key = state.chatMap.keys.elementAt(index);
-                          var list = state.chatMap[key] ?? [];
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Text(
-                                  key,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color(0xff4D4C4E), fontSize: 18),
-                                ),
-                              ),
-                              Flexible(
-                                child: ListView.builder(
-                                  controller: _chatScrollController,
-                                  itemCount: list.length,
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    if (list[index].senderId ==
-                                        senderNickname) {
-                                      return Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.end,
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                gradient: purpleGradient,
-                                                borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(15))),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12, horizontal: 20),
-                                            margin: EdgeInsets.only(left: 20),
-                                            child: Text(
-                                              list[index].content,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(
-                                                            37)),
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            profileImg),
-                                                        fit: BoxFit.fill)),
-                                                height: 50,
-                                                width: 50,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Flexible(
-                                                child: Container(
+                    child: Column(
+                      children: [
+                        if(state.chatMap.isEmpty)
+                         const Expanded(child: Center(child: Text("Send your first message",textAlign: TextAlign.center,style: TextStyle(color:Color(0xffC8C8C8)),)))
+                        else
+                          Expanded(
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: state.chatMap.length,
+                              scrollDirection: Axis.vertical,
+                              reverse: true,
+                              itemBuilder: (context, i1) {
+                                int mapIndex = state.chatMap.length-1-i1;
+                                var key = state.chatMap.keys.elementAt(mapIndex);
+                                var list = state.chatMap[key] ?? [];
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Text(
+                                        key,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xff4D4C4E), fontSize: 18),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: ListView.builder(
+                                        controller: _chatScrollController,
+                                        itemCount: list.length,
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        reverse:true,
+                                        itemBuilder: (context, i2) {
+                                          int index = list.length-1-i2;
+                                          if (list[index].senderId ==
+                                              senderNickname) {
+                                            return Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Container(
                                                   decoration: BoxDecoration(
-                                                      gradient: greyGradient,
+                                                      gradient: purpleGradient,
                                                       borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              15))),
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 12,
-                                                      horizontal: 20),
-                                                  margin: EdgeInsets.only(
-                                                      right: 20),
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15))),
+                                                  padding: const EdgeInsets.symmetric(
+                                                      vertical: 12, horizontal: 20),
+                                                  margin: EdgeInsets.only(left: 20),
                                                   child: Text(
                                                     list[index].content,
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          )
-                                        ],
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                  ),
-                if (state.chatApi is Success)
-                  SizedBox(
-                    height: 20,
-                  ),
-                if (state.chatApi is Success)
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                    color: Color(0xff1F1F1F),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xff272626), width: 0.3),
-                                borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                                color: Color(0xff272626)),
-                            child: TextField(
-                              onChanged: (value) {
-                                bloc.add(
-                                  MessageTypingEvent(message: value),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
+                                              ],
+                                            );
+                                          } else {
+                                            return Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          const BorderRadius.all(
+                                                              Radius.circular(
+                                                                  37)),
+                                                          image: DecorationImage(
+                                                              image: AssetImage(
+                                                                  profileImg),
+                                                              fit: BoxFit.fill)),
+                                                      height: 50,
+                                                      width: 50,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Flexible(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            gradient: greyGradient,
+                                                            borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    15))),
+                                                        padding: EdgeInsets.symmetric(
+                                                            vertical: 12,
+                                                            horizontal: 20),
+                                                        margin: EdgeInsets.only(
+                                                            right: 20),
+                                                        child: Text(
+                                                          list[index].content,
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                )
+                                              ],
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 );
-                              },
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: "Type Your Message",
-                                hintStyle: TextStyle(color: Color(0xff4D4C4E)),
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.only(left: 10),
-                              ),
-                              controller: messageTextController,
-                            ),
-                          ),
+                              }),
                         ),
                         SizedBox(
-                          width: 10,
+                          height: 20,
                         ),
-                        GestureDetector(
-                            child: Image.asset('assets/send_message.png'),
-                            onTap: () {
-                              if (state.messageToSend.isNotEmpty) {
-                                stompClient.send(
-                                  destination: "/app/chat",
-                                  body: json.encode(
-                                    {
-                                      "senderId": state.senderUserName,
-                                      "recipientId": state.receiverUserName,
-                                      "content": state.messageToSend
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                          color: Color(0xff1F1F1F),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Color(0xff272626), width: 0.3),
+                                      borderRadius:
+                                      const BorderRadius.all(Radius.circular(8)),
+                                      color: Color(0xff272626)),
+                                  child: TextField(
+                                    onChanged: (value) {
+                                      bloc.add(
+                                        MessageTypingEvent(message: value),
+                                      );
                                     },
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: "Type Your Message",
+                                      hintStyle: TextStyle(color: Color(0xff4D4C4E)),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.only(left: 10),
+                                    ),
+                                    controller: messageTextController,
                                   ),
-                                );
-                              }
-                            })
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              GestureDetector(
+                                  child: Image.asset('assets/send_message.png'),
+                                  onTap: () {
+                                    if (state.messageToSend.isNotEmpty) {
+                                      stompClient.send(
+                                        destination: "/app/chat",
+                                        body: json.encode(
+                                          {
+                                            "senderId": state.senderUserName,
+                                            "recipientId": state.receiverUserName,
+                                            "content": state.messageToSend
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  })
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
+                  ),
+                
+
               ],
             );
           },
@@ -318,7 +342,7 @@ class ChatScreen extends StatelessWidget {
                     _chatScrollController.position.maxScrollExtent,
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeOut);
-                messageTextController.text = "";
+                messageTextController.clear();
               }
             }
           } catch (ex) {
