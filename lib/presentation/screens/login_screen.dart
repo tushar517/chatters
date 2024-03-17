@@ -5,6 +5,7 @@ import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/ProgressIndicator.dart';
 import 'package:chat_app/presentation/common_widgets/custom_button.dart';
+import 'package:chat_app/presentation/common_widgets/custom_snackbar.dart';
 import 'package:chat_app/presentation/common_widgets/custom_textfield.dart';
 import 'package:chat_app/commonutils/router/nav_router.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,7 @@ class UserLogin extends StatelessWidget {
           listener: (BuildContext context, LoginState state) {
             Result result = state.loginApi as Result;
             if (result is Success<ApiResponse>) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(result.data.description)));
+              showSnackBar(context, result.data.description, true);
               if (result.data.status) {
                 stompClient.send(
                     destination: "/app/user/addUser",
@@ -43,8 +43,7 @@ class UserLogin extends StatelessWidget {
               }
             }
             if (result is Error) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(result.errorMessage)));
+              showSnackBar(context, result.errorMessage, false);
             }
           },
           builder: (context, state) {

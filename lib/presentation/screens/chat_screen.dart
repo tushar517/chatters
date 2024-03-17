@@ -6,7 +6,6 @@ import 'package:chat_app/data/models/user.dart';
 import 'package:chat_app/presentation/bloc/chat/chat_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 
@@ -131,9 +130,7 @@ class ChatScreen extends StatelessWidget {
                               controller: _scrollController,
                               itemCount: state.chatMap.length,
                               scrollDirection: Axis.vertical,
-                              reverse: true,
-                              itemBuilder: (context, i1) {
-                                int mapIndex = state.chatMap.length-1-i1;
+                              itemBuilder: (context, mapIndex) {
                                 var key = state.chatMap.keys.elementAt(mapIndex);
                                 var list = state.chatMap[key] ?? [];
                                 return Column(
@@ -154,9 +151,7 @@ class ChatScreen extends StatelessWidget {
                                         itemCount: list.length,
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,
-                                        reverse:true,
-                                        itemBuilder: (context, i2) {
-                                          int index = list.length-1-i2;
+                                        itemBuilder: (context, index) {
                                           if (list[index].senderId ==
                                               senderNickname) {
                                             return Column(
@@ -292,6 +287,7 @@ class ChatScreen extends StatelessWidget {
                               GestureDetector(
                                   child: Image.asset('assets/send_message.png'),
                                   onTap: () {
+                                    messageTextController.clear();
                                     if (state.messageToSend.isNotEmpty) {
                                       stompClient.send(
                                         destination: "/app/chat",
@@ -311,8 +307,6 @@ class ChatScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                
-
               ],
             );
           },
@@ -334,15 +328,18 @@ class ChatScreen extends StatelessWidget {
                     chat.recipientId == senderNickname)) {
               bloc.add(ChatReceiveEvent(chat: chat));
               if (chat.senderId == senderNickname) {
-                _scrollController.animateTo(
-                    _scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut);
-                _chatScrollController.animateTo(
-                    _chatScrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut);
-                messageTextController.clear();
+                if(_scrollController.hasClients){
+                  _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut);
+                }
+                if(_chatScrollController.hasClients){
+                  _chatScrollController.animateTo(
+                      _chatScrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOut);
+                }
               }
             }
           } catch (ex) {
