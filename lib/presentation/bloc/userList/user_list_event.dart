@@ -9,12 +9,12 @@ class InitUserScreen extends UserListEvent{
 }
 
 class StompAddUser extends UserListEvent{
-  final User user;
+  final UserModel user;
 
   StompAddUser({required this.user});
 }
 class StompRemoveUser extends UserListEvent{
-  final User user;
+  final UserModel user;
 
   StompRemoveUser({required this.user});
 

@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:chat_app/data/models/ApiResponse.dart';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/api_request/user_request.dart';
+import 'package:chat_app/data/models/api_response_model.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/ProgressIndicator.dart';
 import 'package:chat_app/presentation/common_widgets/custom_button.dart';
@@ -28,7 +29,7 @@ class UserLogin extends StatelessWidget {
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (BuildContext context, LoginState state) {
             Result result = state.loginApi as Result;
-            if (result is Success<ApiResponse>) {
+            if (result is Success<ApiResponseModel>) {
               showSnackBar(context, result.data.description, true);
               if (result.data.status) {
                 stompClient.send(
@@ -143,7 +144,7 @@ class UserLogin extends StatelessWidget {
                                   width: width,
                                   onPress: () {
                                     bloc.add(LoginUserRequest(
-                                        user: User(
+                                        user: UserRequest(
                                             userName: state.username,
                                             password: state.password,
                                         )));
@@ -155,7 +156,7 @@ class UserLogin extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           const Row(
@@ -204,7 +205,7 @@ class UserLogin extends StatelessWidget {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Image(

@@ -1,8 +1,8 @@
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/api_request/user_request.dart';
+import 'package:chat_app/commonutils/Result.dart';
 
 abstract interface class AuthRepository {
-  Future<Result> signUp({required User user});
+  Future<Result> signUp({required UserRequest user});
 
-  Future<Result> logIn({required User user});
+  Future<Result> logIn({required UserRequest user});
 }

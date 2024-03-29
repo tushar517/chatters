@@ -3,8 +3,8 @@ part of 'chat_bloc.dart';
 class ChatState {
   String senderUserName;
   String receiverUserName;
-  List<ChatMessage> chatList;
-  Map<String,List<ChatMessage>> chatMap;
+  List<ChatMessageModel> chatList;
+  Map<String,List<ChatMessageModel>> chatMap;
   String messageToSend;
   Result chatApi;
 
@@ -14,16 +14,16 @@ class ChatState {
     this.chatApi = const Empty(),
     this.receiverUserName ="",
     this.senderUserName = "",
-    this.chatMap = const <String,List<ChatMessage>>{}
+    this.chatMap = const <String,List<ChatMessageModel>>{}
   });
 
   ChatState copyWith({
     String? messageToSend,
-    List<ChatMessage>? chatList,
+    List<ChatMessageModel>? chatList,
     Result? chatApi,
     String? senderUserName,
     String? receiverUserName,
-    Map<String,List<ChatMessage>>? chatMap
+    Map<String,List<ChatMessageModel>>? chatMap
   }) {
     return ChatState(
       messageToSend: messageToSend??this.messageToSend,

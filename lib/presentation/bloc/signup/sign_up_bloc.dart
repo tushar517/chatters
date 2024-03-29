@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chat_app/commonutils/api_request/user_request.dart';
 import 'package:chat_app/domain/usecases/sign_up.dart';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:string_validator/string_validator.dart';
 

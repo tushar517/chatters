@@ -1,32 +1,23 @@
 import 'dart:convert';
+import 'package:chat_app/domain/entities/User.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-List<User> userFromJson(String str) =>
-    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
+List<UserModel> userFromJson(String str) =>
+    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
 
-String userToJson(List<User> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+class UserModel extends User {
+  UserModel(
+      {required super.userName,
+        super.fullName = "",
+        super.status = false,
+        super.password = "",
+        super.gender = "Male",
+        super.lastSeen,
+        super.lastSeenTime = ""});
 
-class User {
-  User(
-      {required this.userName,
-      this.fullName = "",
-      this.status = false,
-      this.password = "",
-      this.gender = "Male",
-      this.lastSeen,
-      this.lastSeenTime = ""});
 
-  String userName;
-  String fullName;
-  bool status;
-  String password;
-  String gender;
-  DateTime? lastSeen;
-  String lastSeenTime;
-
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     //yyyy-MM-dd'T'HH:mm:ss.SSSZ
     DateTime timeStamp;
     String lastSeen;
@@ -45,7 +36,7 @@ class User {
       lastSeen = DateFormat("dd/MM/yyyy").format(timeStamp);
     }
 
-    return User(
+    return UserModel(
         userName: json["userName"],
         fullName: json["fullName"],
         status: json["status"],
@@ -54,15 +45,6 @@ class User {
         lastSeen: timeStamp,
         lastSeenTime: lastSeen);
   }
-
-  Map<String, dynamic> toJson() => {
-        "userName": userName,
-        "fullName": fullName,
-        "status": status,
-        "password": password,
-        "gender": gender,
-        "lastSeen": lastSeen ?? DateTime.now().toIso8601String()
-      };
 
   @override
   String toString() {

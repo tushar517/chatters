@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/commonutils/http_service.dart';
-import 'package:chat_app/data/models/ChatListRequest.dart';
+import 'package:chat_app/commonutils/api_request/ChatListRequest.dart';
 import 'package:chat_app/domain/usecases/chat_list.dart';
 import 'package:meta/meta.dart';
 import 'package:collection/collection.dart';
 
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/chat_message.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/chat_message_model.dart';
 part 'chat_event.dart';
 
 part 'chat_state.dart';
@@ -26,9 +26,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(state.copyWith(chatApi: const Loading()));
       try {
         var chats = await _chatListUseCase(ChatListRequest(recipientId: state.receiverUserName, senderId: state.senderUserName));
-        if(chats is Success<List<ChatMessage>>) {
-          Map<String, List<ChatMessage>> chatMap =
-              groupBy(chats.data, (ChatMessage p0) => p0.messageDay);
+        if(chats is Success<List<ChatMessageModel>>) {
+          Map<String, List<ChatMessageModel>> chatMap =
+              groupBy(chats.data, (ChatMessageModel p0) => p0.messageDay);
           emit(
             state.copyWith(
                 chatList: List.from(state.chatList)..addAll(chats.data),
@@ -54,7 +54,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
 
     on<ChatReceiveEvent>((event, emit) {
-      Map<String,List<ChatMessage>> chatMap = state.chatMap;
+      Map<String,List<ChatMessageModel>> chatMap = state.chatMap;
       chatMap.update(event.chat.messageDay, (list) => [...list, event.chat], ifAbsent: () => [event.chat]);
       emit(
         state.copyWith(

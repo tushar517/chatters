@@ -1,5 +1,5 @@
 import 'package:chat_app/commonutils/use_case.dart';
-import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/commonutils/Result.dart';
 import 'package:chat_app/domain/repository/ListRepository.dart';
 
 class UserListUseCase implements UseCase{

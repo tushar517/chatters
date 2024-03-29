@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:core';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/chat_message.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/chat_message_model.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/presentation/bloc/chat/chat_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import '../../commonutils/StompClient/stomp_client.dart';
 
 class ChatScreen extends StatelessWidget {
   final String senderNickname;
-  final User receiverUser;
+  final UserModel receiverUser;
   final String profileImg;
   final ScrollController _scrollController = ScrollController();
   final ScrollController _chatScrollController = ScrollController();
@@ -268,10 +268,10 @@ class ChatScreen extends StatelessWidget {
                                         MessageTypingEvent(message: value),
                                       );
                                     },
-                                    style: TextStyle(
+                                    style:const TextStyle(
                                       color: Colors.white,
                                     ),
-                                    decoration: InputDecoration(
+                                    decoration:const InputDecoration(
                                       hintText: "Type Your Message",
                                       hintStyle: TextStyle(color: Color(0xff4D4C4E)),
                                       border: InputBorder.none,
@@ -281,7 +281,7 @@ class ChatScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               GestureDetector(
@@ -300,7 +300,8 @@ class ChatScreen extends StatelessWidget {
                                         ),
                                       );
                                     }
-                                  })
+                                  },
+                              )
                             ],
                           ),
                         )
@@ -321,7 +322,7 @@ class ChatScreen extends StatelessWidget {
         destination: "/user/messages",
         callback: (StompFrame frame) {
           try {
-            ChatMessage chat = ChatMessage.fromJson(json.decode(frame.body!));
+            ChatMessageModel chat = ChatMessageModel.fromJson(json.decode(frame.body!));
             if ((chat.senderId == senderNickname &&
                 chat.recipientId == receiverUser.userName) ||
                 (chat.senderId == receiverUser.userName &&
@@ -329,16 +330,12 @@ class ChatScreen extends StatelessWidget {
               bloc.add(ChatReceiveEvent(chat: chat));
               if (chat.senderId == senderNickname) {
                 if(_scrollController.hasClients){
-                  _scrollController.animateTo(
-                      _scrollController.position.maxScrollExtent,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOut);
+                  _scrollController.jumpTo(
+                      _scrollController.position.maxScrollExtent);
                 }
                 if(_chatScrollController.hasClients){
-                  _chatScrollController.animateTo(
-                      _chatScrollController.position.maxScrollExtent,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeOut);
+                  _chatScrollController.jumpTo(
+                      _chatScrollController.position.maxScrollExtent);
                 }
               }
             }

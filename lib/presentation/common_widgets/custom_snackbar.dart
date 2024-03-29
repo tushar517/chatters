@@ -11,7 +11,11 @@ void showSnackBar(BuildContext context,String content,bool isSuccess){
             children: [
               Icon(isSuccess?Icons.check_circle_outline:Icons.cancel_outlined,color: Colors.white,),
               SizedBox(width: 10,),
-              Text(content)
+              Expanded(child: Text(
+                  content,
+                textAlign: TextAlign.center,
+              )
+              )
             ],
           ),
           backgroundColor: isSuccess?Colors.greenAccent:Colors.redAccent,

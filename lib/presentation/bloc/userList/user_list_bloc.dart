@@ -1,5 +1,5 @@
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/domain/usecases/user_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,9 +17,9 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
       emit(state.copyWith(userApi: const Loading()));
       try {
         var users = await _userListUseCase("");
-        List<User> connectedList = [];
-        List<User> disConnectedList = [];
-        if (users is Success<List<User>>) {
+        List<UserModel> connectedList = [];
+        List<UserModel> disConnectedList = [];
+        if (users is Success<List<UserModel>>) {
           connectedList = users.data
               .where((element) =>
                   (element.status && element.userName != event.userName))
@@ -39,8 +39,8 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
     });
 
     on<StompAddUser>((event, emit) {
-      List<User> list = List.from(state.connectedUserList);
-      List<User> disconnectedList = List.from(state.disconnectedUserList);
+      List<UserModel> list = List.from(state.connectedUserList);
+      List<UserModel> disconnectedList = List.from(state.disconnectedUserList);
       int index =
           list.indexWhere((element) => element.userName == event.user.userName);
       int disconnectedIndex = disconnectedList
@@ -56,8 +56,8 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
     });
 
     on<StompRemoveUser>((event, emit) {
-      List<User> connectedList = List.from(state.connectedUserList);
-      List<User> disconnectedList = List.from(state.disconnectedUserList);
+      List<UserModel> connectedList = List.from(state.connectedUserList);
+      List<UserModel> disconnectedList = List.from(state.disconnectedUserList);
       int index = connectedList
           .indexWhere((element) => element.userName == event.user.userName);
       int disconnectedIndex = disconnectedList

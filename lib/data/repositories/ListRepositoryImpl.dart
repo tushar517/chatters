@@ -1,5 +1,5 @@
-import 'package:chat_app/data/List_remote_data_source.dart';
-import 'package:chat_app/data/models/Result.dart';
+import 'package:chat_app/data/data_sources/List_remote_data_source.dart';
+import 'package:chat_app/commonutils/Result.dart';
 import 'package:chat_app/domain/repository/ListRepository.dart';
 
 class ListRepositoryImpl implements ListRepository{

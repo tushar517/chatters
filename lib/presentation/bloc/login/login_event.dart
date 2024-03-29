@@ -12,6 +12,6 @@ class UserPasswordChangeEvent extends LoginEvent{
   UserPasswordChangeEvent({required this.password});
 }
 class LoginUserRequest extends LoginEvent{
-  final User user;
+  final UserRequest user;
   LoginUserRequest({required this.user});
 }

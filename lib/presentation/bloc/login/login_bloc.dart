@@ -1,6 +1,7 @@
-import 'package:chat_app/data/models/ApiResponse.dart';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/api_request/user_request.dart';
+import 'package:chat_app/data/models/api_response_model.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/commonutils/http_service.dart';
 import 'package:chat_app/domain/usecases/login.dart';
 import 'package:flutter/foundation.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/Result.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/presentation/bloc/userList/user_list_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/custom_values.dart';
 import 'package:chat_app/commonutils/router/nav_router.dart';
@@ -187,141 +187,142 @@ class ConnectedUsers extends StatelessWidget {
                               ],
                             ),
                           if (state.disconnectedUserList.isNotEmpty)
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      gradient: textGradient,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(28))),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Recently Active',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Image.asset('assets/time.png'),
-                                    ],
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  height: 145,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    itemBuilder:
-                                        (BuildContext buildContext, int index) {
-                                      String img = '';
-                                      if (state.disconnectedUserList[index]
-                                              .gender ==
-                                          'Male') {
-                                        int index = Random()
-                                            .nextInt(state.maleImg.length - 1);
-                                        img = state.maleImg[index];
-                                      } else {
-                                        int index = Random().nextInt(
-                                            state.femaleImg.length - 1);
-                                        img = state.femaleImg[index];
-                                      }
-                                      return GestureDetector(
-                                        onTap: () {
-                                          screenRouter.goNamed("chat_screen",
-                                              pathParameters: {
-                                                "nickName": nickName,
-                                                "profileImg": img
-                                              },
-                                              extra: state
-                                                  .disconnectedUserList[index]);
-                                        },
-                                        child: IntrinsicWidth(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(15)),
-                                                border: Border.all(
-                                                    color: const Color(
-                                                        0xffC8C8C8)),
-                                                color: const Color(0xff1F1F1F)),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              key: ValueKey(state
-                                                  .disconnectedUserList[index]
-                                                  .userName),
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius.circular(
-                                                                  100)),
-                                                      color: Colors.red,
-                                                      image: DecorationImage(
-                                                          image:
-                                                              AssetImage(img),
-                                                          fit: BoxFit.fill)),
-                                                  height: 107,
-                                                  width: 84,
-                                                ),
-                                                Text(
-                                                  state
-                                                      .disconnectedUserList[
-                                                          index]
-                                                      .fullName,
-                                                  style: const TextStyle(
-                                                      color: Color(0xffC8C8C8),
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(
-                                                  state
-                                                      .disconnectedUserList[
-                                                          index]
-                                                      .lastSeenTime,
-                                                  style: const TextStyle(
-                                                      color: Color(0xff7C01F6),
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        gradient: textGradient,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(28))),
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Recently Active',
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 12),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Image.asset('assets/time.png'),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Expanded(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemBuilder:
+                                          (BuildContext buildContext, int index) {
+                                        String img = '';
+                                        if (state.disconnectedUserList[index]
+                                                .gender ==
+                                            'Male') {
+                                          int index = Random()
+                                              .nextInt(state.maleImg.length - 1);
+                                          img = state.maleImg[index];
+                                        } else {
+                                          int index = Random().nextInt(
+                                              state.femaleImg.length - 1);
+                                          img = state.femaleImg[index];
+                                        }
+                                        return GestureDetector(
+                                          onTap: () {
+                                            screenRouter.goNamed("chat_screen",
+                                                pathParameters: {
+                                                  "nickName": nickName,
+                                                  "profileImg": img
+                                                },
+                                                extra: state
+                                                    .disconnectedUserList[index]);
+                                          },
+                                          child: IntrinsicWidth(
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8.0),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(15)),
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xffC8C8C8)),
+                                                  color: const Color(0xff1F1F1F)),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                key: ValueKey(state
+                                                    .disconnectedUserList[index]
+                                                    .userName),
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .all(
+                                                                Radius.circular(
+                                                                    100)),
+                                                        color: Colors.red,
+                                                        image: DecorationImage(
+                                                            image:
+                                                                AssetImage(img),
+                                                            fit: BoxFit.fill)),
+                                                    height: 107,
+                                                    width: 84,
+                                                  ),
+                                                  Text(
+                                                    state
+                                                        .disconnectedUserList[
+                                                            index]
+                                                        .fullName,
+                                                    style: const TextStyle(
+                                                        color: Color(0xffC8C8C8),
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    state
+                                                        .disconnectedUserList[
+                                                            index]
+                                                        .lastSeenTime,
+                                                    style: const TextStyle(
+                                                        color: Color(0xff7C01F6),
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    itemCount:
-                                        state.disconnectedUserList.length,
+                                        );
+                                      },
+                                      itemCount:
+                                          state.disconnectedUserList.length,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                         ],
                       ),
@@ -340,7 +341,7 @@ class ConnectedUsers extends StatelessWidget {
       callback: (StompFrame frame) {
         try {
           print("stomp user ${frame.body!}");
-          User user = User.fromJson(json.decode(frame.body!));
+          UserModel user = UserModel.fromJson(json.decode(frame.body!));
           if (user.status) {
             bloc.add(StompAddUser(user: user));
           } else {

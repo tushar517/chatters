@@ -1,8 +1,8 @@
-import 'package:chat_app/data/Auth_remote_data_source.dart';
-import 'package:chat_app/data/List_remote_data_source.dart';
+import 'package:chat_app/data/data_sources/Auth_remote_data_source.dart';
+import 'package:chat_app/data/data_sources/List_remote_data_source.dart';
 import 'package:chat_app/domain/repository/AuthRepository.dart';
-import 'package:chat_app/domain/repository/Impl/AuthRepositoryImpl.dart';
-import 'package:chat_app/domain/repository/Impl/ListRepositoryImpl.dart';
+import 'package:chat_app/data/repositories/AuthRepositoryImpl.dart';
+import 'package:chat_app/data/repositories/ListRepositoryImpl.dart';
 import 'package:chat_app/domain/repository/ListRepository.dart';
 import 'package:chat_app/domain/usecases/chat_list.dart';
 import 'package:chat_app/domain/usecases/login.dart';

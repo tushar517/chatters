@@ -1,6 +1,6 @@
-import 'package:chat_app/data/models/ApiResponse.dart';
-import 'package:chat_app/data/models/Result.dart';
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/commonutils/api_request/user_request.dart';
+import 'package:chat_app/data/models/api_response_model.dart';
+import 'package:chat_app/commonutils/Result.dart';
 import 'package:chat_app/presentation/bloc/signup/sign_up_bloc.dart';
 import 'package:chat_app/presentation/common_widgets/ProgressIndicator.dart';
 import 'package:chat_app/presentation/common_widgets/custom_snackbar.dart';
@@ -24,7 +24,7 @@ class SignUpScreen extends StatelessWidget {
         child: BlocConsumer<SignUpBloc, SignUpState>(
           listener: (BuildContext context, SignUpState state) {
             Result result = state.signUpApi as Result;
-            if (result is Success<ApiResponse>) {
+            if (result is Success<ApiResponseModel>) {
               showSnackBar(context, result.data.description, true);
               if (result.data.status) {
                 screenRouter.goNamed("login");
@@ -254,7 +254,7 @@ class SignUpScreen extends StatelessWidget {
                                     width: width,
                                     onPress: () {
                                       bloc.add(SignUpRequest(
-                                        user: User(
+                                        user: UserRequest(
                                             userName: state.userName,
                                             fullName:
                                                 "${state.firstName} ${state.lastName}",

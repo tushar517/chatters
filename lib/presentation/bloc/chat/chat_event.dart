@@ -24,7 +24,7 @@ class ChatLoadEvent extends ChatEvent{
 }
 
 class ChatReceiveEvent extends ChatEvent{
-  final ChatMessage chat;
+  final ChatMessageModel chat;
 
   ChatReceiveEvent({required this.chat});
 }

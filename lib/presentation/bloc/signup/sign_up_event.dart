@@ -34,7 +34,7 @@ class CnfPasswordChange extends SignUpEvent{
 }
 
 class SignUpRequest extends SignUpEvent{
-  final User user;
+  final UserRequest user;
   SignUpRequest({required this.user});
 }
 

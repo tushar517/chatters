@@ -1,8 +1,8 @@
 part of 'user_list_bloc.dart';
 
 class UserListState {
-  List<User> connectedUserList;
-  List<User> disconnectedUserList;
+  List<UserModel> connectedUserList;
+  List<UserModel> disconnectedUserList;
   final List<String> maleImg = [
     'assets/male1.jpg',
     'assets/male2.jpg',
@@ -23,7 +23,7 @@ class UserListState {
     this.userApi = const Empty(),
   });
 
-  UserListState copyWith({List<User>? connectedUserList,List<User>? disconnectedUserList, Result? userApi}){
+  UserListState copyWith({List<UserModel>? connectedUserList,List<UserModel>? disconnectedUserList, Result? userApi}){
     return UserListState(
       connectedUserList: connectedUserList??this.connectedUserList,
         disconnectedUserList: disconnectedUserList??this.disconnectedUserList,

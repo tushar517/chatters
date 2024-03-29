@@ -1,36 +1,25 @@
 import 'dart:convert';
 
+import 'package:chat_app/domain/entities/chat_message.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-List<ChatMessage> chatFromJson(String str) => List<ChatMessage>.from(
-    json.decode(str).map((x) => ChatMessage.fromJson(x)));
+List<ChatMessageModel> chatFromJson(String str) => List<ChatMessageModel>.from(
+    json.decode(str).map((x) => ChatMessageModel.fromJson(x)));
 
-String chatToJson(List<ChatMessage> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class ChatMessage {
-  ChatMessage(
-      {required this.id,
-      required this.timeStamp,
-      required this.chatId,
-      required this.content,
-      required this.recipientId,
-      required this.senderId,
-      this.messageDay = "",
-        this.messageTime = "",
+class ChatMessageModel extends ChatMessage{
+  ChatMessageModel(
+      {required super.id,
+      required super.timeStamp,
+      required super.chatId,
+      required super.content,
+      required super.recipientId,
+      required super.senderId,
+        super.messageDay = "",
+        super.messageTime = "",
       });
 
-  int id;
-  String chatId;
-  String senderId;
-  String recipientId;
-  String content;
-  DateTime timeStamp;
-  String messageDay;
-  String messageTime;
-
-  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+  factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
     DateTime timeStamp;
     String messageTime;
     String messageDay;
@@ -50,7 +39,7 @@ class ChatMessage {
     }
 
     messageTime = DateFormat.jm().format(timeStamp);
-    return ChatMessage(
+    return ChatMessageModel(
         id: json["id"],
         chatId: json["chatId"],
         senderId: json["senderId"],

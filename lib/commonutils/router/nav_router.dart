@@ -1,4 +1,4 @@
-import 'package:chat_app/data/models/user.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/presentation/screens/chat_screen.dart';
 import 'package:chat_app/presentation/screens/connected_user_screen.dart';
 import 'package:chat_app/presentation/screens/login_screen.dart';
@@ -36,7 +36,7 @@ final GoRouter screenRouter = GoRouter(routes: <GoRoute>[
             path: 'ChatScreen/:profileImg',
             name: 'chat_screen',
             builder: (BuildContext buildContext, GoRouterState state) {
-              final user = state.extra as User;
+              final user = state.extra as UserModel;
               return ChatScreen(
                 senderNickname: state.pathParameters["nickName"] ?? "",
                 receiverUser: user,
